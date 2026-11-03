@@ -63,6 +63,7 @@ config("brotli_config") {
 
 ohos_shared_library("brotli_shared") {
   branch_protector_ret = "pac_ret"
+  version_script = "libbrotli_shared.map"
   if (current_os == "ios") {
     ldflags = [
       "-Wl",

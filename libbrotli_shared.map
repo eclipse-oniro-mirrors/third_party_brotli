@@ -1,0 +1,72 @@
+# Copyright (c) 2026 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# White-list version script for libbrotli_shared.z.so
+# Upstream internal cross-TU functions are already visibility("hidden")
+# (BROTLI_INTERNAL, see c/include/brotli/port.h), so only the public API
+# below is exported; everything else is localized at link time.
+
+{
+  global:
+    /* decoder API (declared in c/include/brotli/decode.h) */
+    BrotliDecoderAttachDictionary;
+    BrotliDecoderCreateInstance;
+    BrotliDecoderDecompress;
+    BrotliDecoderDecompressStream;
+    BrotliDecoderDestroyInstance;
+    BrotliDecoderErrorString;
+    BrotliDecoderGetErrorCode;
+    BrotliDecoderHasMoreOutput;
+    BrotliDecoderIsFinished;
+    BrotliDecoderIsUsed;
+    BrotliDecoderSetMetadataCallbacks;
+    BrotliDecoderSetParameter;
+    BrotliDecoderTakeOutput;
+    BrotliDecoderVersion;
+
+    /* encoder API (declared in c/include/brotli/encode.h) */
+    BrotliEncoderAttachPreparedDictionary;
+    BrotliEncoderCompress;
+    BrotliEncoderCompressStream;
+    BrotliEncoderCreateInstance;
+    BrotliEncoderDestroyInstance;
+    BrotliEncoderDestroyPreparedDictionary;
+    BrotliEncoderHasMoreOutput;
+    BrotliEncoderIsFinished;
+    BrotliEncoderMaxCompressedSize;
+    BrotliEncoderPrepareDictionary;
+    BrotliEncoderSetParameter;
+    BrotliEncoderTakeOutput;
+    BrotliEncoderVersion;
+    /* reserved: ENC_EXTRA API, declared in encode.h but currently built as
+       internal (BROTLI_BUILD_ENC_EXTRA_API not defined); listed here so a
+       future upstream sync does not silently drop them */
+    BrotliEncoderEstimatePeakMemoryUsage;
+    BrotliEncoderGetPreparedDictionarySize;
+
+    /* shared dictionary API (declared in c/include/brotli/shared_dictionary.h) */
+    BrotliSharedDictionaryAttach;
+    BrotliSharedDictionaryCreateInstance;
+    BrotliSharedDictionaryDestroyInstance;
+
+    /* common API (upstream BROTLI_COMMON_API, declared in c/common/*.h,
+       used for allocator hooks and C/Java dictionary sharing) */
+    BrotliDefaultAllocFunc;
+    BrotliDefaultFreeFunc;
+    BrotliGetDictionary;
+    BrotliGetTransforms;
+    BrotliSetDictionaryData;
+    BrotliTransformDictionaryWord;
+  local:
+    *;
+};
